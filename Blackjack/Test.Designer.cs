@@ -45,7 +45,7 @@
             // 
             // btnPlayBlackjack
             // 
-            this.btnPlayBlackjack.Location = new System.Drawing.Point(602, 367);
+            this.btnPlayBlackjack.Location = new System.Drawing.Point(1002, 374);
             this.btnPlayBlackjack.Name = "btnPlayBlackjack";
             this.btnPlayBlackjack.Size = new System.Drawing.Size(150, 50);
             this.btnPlayBlackjack.TabIndex = 1;
@@ -57,7 +57,8 @@
             // 
             this.testTextBox.Location = new System.Drawing.Point(52, 91);
             this.testTextBox.Name = "testTextBox";
-            this.testTextBox.Size = new System.Drawing.Size(700, 250);
+            this.testTextBox.ReadOnly = true;
+            this.testTextBox.Size = new System.Drawing.Size(1100, 250);
             this.testTextBox.TabIndex = 2;
             this.testTextBox.Text = "";
             this.testTextBox.TextChanged += new System.EventHandler(this.testTextBox_TextChanged);
@@ -66,12 +67,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1184, 461);
             this.Controls.Add(this.testTextBox);
             this.Controls.Add(this.btnPlayBlackjack);
             this.Controls.Add(this.btnTest);
             this.Name = "Test";
-            this.Text = "Form1";
+            this.Text = "Test Blackjack";
             this.ResumeLayout(false);
 
         }

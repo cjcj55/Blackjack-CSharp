@@ -27,12 +27,16 @@ namespace Blackjack
 
         public Card GetCard(int index)
         {
-            return cards[index];
+            if (index < 0 || index >= cards.Length)
+            {
+                return null;
+            }
+            return cards[index - 1];
         }
 
         public void SetCard(int index, Card card)
         {
-            cards[index] = card;
+            cards[index - 1] = card;
         }
 
         public void AddToDeck(Card card)
@@ -47,7 +51,7 @@ namespace Blackjack
             {
                 foreach (char suit in new char[] { 'A', 'H', 'C', 'D' })
                 {
-                    foreach (char face in new char[] {'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T'})
+                    foreach (char face in new char[] {'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'})
                     {
                         this.cards[NumCards++] = new Card(face, suit);
                     }
@@ -74,8 +78,18 @@ namespace Blackjack
                 throw new InvalidOperationException("Cannot remove a card from an empty deck");
             }
 
-            Card topCard = this.cards[this.NumCards--];
+            Card topCard = this.cards[0];
+            this.NumCards--;
+
+            // Shift all cards to the left
+            for (int i = 0; i < NumCards; i++)
+            {
+                this.cards[i] = this.cards[i + 1];
+            }
+
+            // Set last card to null (it is removed)
             this.cards[NumCards] = null;
+
             return topCard;
         }
 
