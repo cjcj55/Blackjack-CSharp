@@ -25,6 +25,12 @@ namespace Blackjack
             set { numCards = value; }
         }
 
+        public int GetHandValue()
+        {
+            if (cards != null && cards.Length >= 2) { }
+            return GetCard(0).GetValue() + GetCard(1).GetValue();
+        }
+
         public Card GetCard(int index)
         {
             if (index < 0 || index >= cards.Length)

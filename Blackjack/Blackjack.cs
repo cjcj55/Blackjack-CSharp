@@ -12,9 +12,12 @@ namespace Blackjack
 {
     public partial class Blackjack : Form
     {
+        private BlackjackGame blackjackGame;
         public Blackjack()
         {
             InitializeComponent();
+
+            blackjackGame= new BlackjackGame();
         }
     }
 }

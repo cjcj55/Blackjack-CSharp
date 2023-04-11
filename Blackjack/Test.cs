@@ -9,7 +9,8 @@ namespace Blackjack
 
         private void btnPlayBlackjack_Click(object sender, EventArgs e)
         {
-
+            var blackjackBoard = new Blackjack();
+            blackjackBoard.Show();
         }
 
         private void btnTest_Click(object sender, EventArgs e)
