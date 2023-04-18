@@ -55,7 +55,7 @@ namespace Blackjack
         {
             if (numCards == 0)
             {
-                foreach (char suit in new char[] { 'A', 'H', 'C', 'D' })
+                foreach (char suit in new char[] { 'S', 'H', 'C', 'D' })
                 {
                     foreach (char face in new char[] {'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'})
                     {

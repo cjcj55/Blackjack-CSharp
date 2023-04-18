@@ -52,13 +52,14 @@ namespace Blackjack
             }
             else
             {
-                return face;
+                return int.Parse(Face.ToString());
             }
         }
 
         public string FileName()
         {
-            return "Resources/" + Face + Suit + ".png";
+            string faceValueString = Face == 'T' ? "10" : Face.ToString();
+            return Path.Combine(Application.StartupPath, "Resources", "cards", Suit + faceValueString + ".gif");
         }
     }
 }

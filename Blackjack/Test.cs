@@ -26,12 +26,20 @@ namespace Blackjack
             deck.AddToDeck(card);
             testTextBox.Text += "\nRemove top card and add to deck; " + deck.ToString();
 
-            testTextBox.Text += "\nImages for 10th and penultimate cards: " + deck.GetCard(10).FileName() + " and " + deck.GetCard(51).FileName();
+            string tenthCard = deck.GetCard(10).FileName();
+            string penultimateCard = deck.GetCard(51).FileName();
+
+            pictureBox1.Image = Image.FromFile(tenthCard);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox2.Image = Image.FromFile(penultimateCard);
+            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
         private void testTextBox_TextChanged(object sender, EventArgs e)
         {
 
         }
+
+
     }
 }
