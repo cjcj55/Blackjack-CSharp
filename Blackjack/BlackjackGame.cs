@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace Blackjack
 {
     internal class BlackjackGame
     {
-        private CardGroup deck;
-        private CardGroup playerCards;
-        private CardGroup dealerCards;
-        private Score score;
+        public CardGroup deck;
+        public CardGroup playerCards;
+        public CardGroup dealerCards;
+        public Score score;
 
         public BlackjackGame()
         {
@@ -170,6 +171,5 @@ namespace Blackjack
             }
             return false;
         }
-
     }
 }

@@ -99,6 +99,11 @@ namespace Blackjack
             return topCard;
         }
 
+        public Card[] GetCards()
+        {
+            return this.cards;
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
