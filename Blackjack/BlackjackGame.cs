@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace Blackjack
@@ -12,8 +13,11 @@ namespace Blackjack
         public CardGroup deck;
         public CardGroup playerCards;
         public CardGroup dealerCards;
-        public Score score;
+        public bool IsRunning { get; set; }
 
+        /// <summary>
+        ///     Creates a new Blackjack game, creating a new deck of cards and shuffling the deck, initializing an empty hand for the player and an empty hand for the dealer.
+        /// </summary>
         public BlackjackGame()
         {
             deck = new CardGroup();
@@ -21,9 +25,14 @@ namespace Blackjack
             deck.Shuffle();
             playerCards = new CardGroup();
             dealerCards = new CardGroup();
-            score = new Score();
+            IsRunning = true;
         }
 
+        /// <summary>
+        ///     At the start of a game of Blackjack, deal two cards to the dealer's hand and two cards to the player's hand, alternating the distribution of the cards between the two.
+        ///     Initializes the hands of the player and the dealer for a game of Blackjack
+        /// </summary>
+        /// <returns></returns>
         public bool DealCards()
         {
             if (deck != null && playerCards != null && dealerCards != null && deck.NumCards >= 4)
@@ -37,15 +46,16 @@ namespace Blackjack
             return false;
         }
 
-        /**
-         * If the dealer's face-up card is an Ace, offer the player insurance before revealing their hole card.
-         * The player can then take insurance or decline it.
-         */
+        /// <summary>
+        ///     If the dealer's face-up card is an Ace, offer the player insurance before revealing their hole card.
+        ///     The player can then take insurance or decline it.
+        /// </summary>
+        /// <returns></returns>
         public bool OfferPlayerInsurance()
         {
             if (dealerCards != null && dealerCards.NumCards == 2)
             {
-                if (dealerCards.GetCard(0).GetValue() == 'A')
+                if (dealerCards.GetCard(1).GetValue() == 10)
                 {
                     return true;
                 }
@@ -53,10 +63,11 @@ namespace Blackjack
             return false;
         }
 
-        /** 
-         * Dealer checks hole card to see if they have blackjack.
-         * If they have blackjack, the hand ends immediately and the player also loses unless they have blackjack (hand is a tie).
-         */
+        /// <summary>
+        ///     Dealer checks hole card to see if they have blackjack.
+        ///     If they have blackjack, the hand ends immediately and the player also loses unless they have blackjack (hand is a tie).
+        /// </summary>
+        /// <returns></returns>
         public bool CheckDealerCardsForBlackjack()
         {
             if (dealerCards != null && dealerCards.NumCards == 2 && dealerCards.GetHandValue() == 21)
@@ -66,7 +77,23 @@ namespace Blackjack
             return false;
         }
 
+        /// <summary>
+        ///     Dealer checks hole card to see if they have blackjack.
+        ///     If they have blackjack, the hand ends immediately and the player also loses unless they have blackjack (hand is a tie).
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckPlayerCardsForBlackjack()
+        {
+            if (playerCards != null && playerCards.GetHandValue() == 21)
+            {
+                return true;
+            }
+            return false;
+        }
 
+        /// <summary>
+        ///     Deals another card to the player's hand if the player chooses to hit.
+        /// </summary>
         public void PlayerHit()
         {
             if (playerCards.NumCards <= 52)
@@ -75,9 +102,21 @@ namespace Blackjack
             }
         }
 
-        /**
-         * Check if the player busted or not
-         */
+        /// <summary>
+        ///     Deals another card to the dealer's hand
+        /// </summary>
+        public void DealerHit()
+        {
+            if (dealerCards.NumCards <= 52)
+            {
+                dealerCards.AddToDeck(deck.DealTopCard());
+            }
+        }
+
+        /// <summary>
+        ///     Check if the player busted or not.
+        /// </summary>
+        /// <returns></returns>
         public bool PlayerBust()
         {
             if (playerCards.GetHandValue() > 21)
@@ -87,9 +126,10 @@ namespace Blackjack
             return false;
         }
 
-        /**
-         * Ends player's turn when they choose to stand
-         */
+
+        /// <summary>
+        ///     Ends player's turn when they choose to stand.
+        /// </summary>
         public void PlayerChoosesToStand()
         {
             // Player has finished their turn, now it's the dealer's turn
@@ -100,6 +140,10 @@ namespace Blackjack
             }
         }
 
+        /// <summary>
+        ///     Determines who won the current game of Blackjack.
+        /// </summary>
+        /// <returns></returns>
         public int CalculateWinner()
         {
             int playerHandValue = playerCards.GetHandValue();
@@ -144,27 +188,13 @@ namespace Blackjack
             }
         }
 
-        /**
-         * Keeps track of the player's and dealer's wins
-         */
-        public void ModifyScore()
-        {
-            int winner = CalculateWinner();
-            if (winner == 1)
-            {
-                score.IncrementPlayerWins();
-            } else if (winner == -1)
-            {
-                score.IncrementDealerWins();
-            }
-        }
-
-        /**
-         * TODO for later
-         */
+        /// <summary>
+        ///     TODO for later.
+        /// </summary>
+        /// <returns></returns>
         public bool CanSplit()
         {
-            if (playerCards.NumCards == 2 && playerCards.GetCard(0).Face == playerCards.GetCard(1).Face)
+            if (playerCards.NumCards == 2 && playerCards.GetCard(1).Face == playerCards.GetCard(2).Face)
             {
                 // The player can split if they have two cards of the same rank
                 return true;

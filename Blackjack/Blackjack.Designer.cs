@@ -88,7 +88,7 @@
             // hitButton
             // 
             this.hitButton.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.hitButton.Location = new System.Drawing.Point(939, 619);
+            this.hitButton.Location = new System.Drawing.Point(166, 603);
             this.hitButton.Name = "hitButton";
             this.hitButton.Size = new System.Drawing.Size(100, 50);
             this.hitButton.TabIndex = 5;
@@ -99,7 +99,7 @@
             // standButton
             // 
             this.standButton.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.standButton.Location = new System.Drawing.Point(1066, 619);
+            this.standButton.Location = new System.Drawing.Point(293, 603);
             this.standButton.Name = "standButton";
             this.standButton.Size = new System.Drawing.Size(100, 50);
             this.standButton.TabIndex = 6;

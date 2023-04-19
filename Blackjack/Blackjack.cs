@@ -14,26 +14,75 @@ namespace Blackjack
     public partial class Blackjack : Form
     {
         private BlackjackGame blackjackGame;
+        private Score score;
         private static string cardBackUrl = Path.Combine(Application.StartupPath, "Resources", "cards", "BicycleBack.png");
         public Blackjack()
         {
             InitializeComponent();
+            PlayBlackjackRound();
 
+            score = new Score();
             blackjackGame = new BlackjackGame();
             blackjackGame.DealCards();
 
             deckPictureBox.Image = Image.FromFile(Path.Combine(Application.StartupPath, "Resources", "cards", "BicycleBackStack.png"));
             deckPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-            populatePictureBoxes();
+            PopulatePictureBoxes();
 
+            CheckForBlackjack();
         }
 
-        private void populatePictureBoxes()
+        /// <summary>
+        ///     Checks if the user has blackjack or if the dealer has blackjack.
+        ///     If both have blackjack, TIE! and nobody wins.
+        /// </summary>
+        /// <returns> @true if one or more people has blackjack</returns>
+        private bool CheckForBlackjack()
+        {
+            if (blackjackGame.CheckPlayerCardsForBlackjack() && !blackjackGame.CheckDealerCardsForBlackjack())
+            {
+                score.IncrementPlayerWins();
+                return true;
+            }
+
+            if (blackjackGame.CheckDealerCardsForBlackjack() && !blackjackGame.CheckPlayerCardsForBlackjack())
+            {
+                score.IncrementDealerWins();
+                return true;
+            }
+
+            if (blackjackGame.CheckDealerCardsForBlackjack() == blackjackGame.CheckPlayerCardsForBlackjack())
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        ///     Simple loop that checks if the player wants to play 5 more rounds of Blackjack or not.
+        ///     Backbone for running multiple rounds of Blackjack within one application window.
+        /// </summary>
+        private void PlayBlackjackRound()
+        {
+            
+        }
+
+        /// <summary>
+        ///     Populates the PictureBoxes for the player's hand and dealer's hand.
+        /// </summary>
+        private void PopulatePictureBoxes()
         {
             LoadCardsIntoPictureBox(blackjackGame.dealerCards, dealerDeckPictureBox, true);
             LoadCardsIntoPictureBox(blackjackGame.playerCards, userDeckPictureBoxSingle, false);
         }
 
+        /// <summary>
+        ///     Populates the PictureBoxes for a hand (either dealer's or player's).
+        /// </summary>
+        /// <param name="hand"></param>
+        /// <param name="pictureBox"></param>
+        /// <param name="isDealer"></param>
         private void LoadCardsIntoPictureBox(CardGroup hand, PictureBox pictureBox, bool isDealer)
         {
             // Clear the PictureBox control before loading new cards
@@ -79,6 +128,13 @@ namespace Blackjack
             }
         }
 
+        /// <summary>
+        ///     Combines the bitmaps to add more card images to a hand that is being displayed.
+        /// </summary>
+        /// <param name="bmp1"></param>
+        /// <param name="bmp2"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         public static Bitmap CombineBitmap(Bitmap bmp1, Bitmap bmp2, Point offset)
         {
             if (bmp1 == null)
@@ -102,12 +158,26 @@ namespace Blackjack
 
         private void hitButton_Click(object sender, EventArgs e)
         {
-
+            blackjackGame.PlayerHit();
+            PopulatePictureBoxes();
+            CheckForBlackjack();
         }
 
         private void standButton_Click(object sender, EventArgs e)
         {
+            //blackjackGame.PlayerChoosesToStand();
 
+            System.Diagnostics.Debug.WriteLine(blackjackGame.dealerCards.GetHandValue());
+
+
+            while (blackjackGame.dealerCards.GetHandValue() < 17)
+            {
+                System.Diagnostics.Debug.WriteLine(blackjackGame.dealerCards.GetHandValue());
+
+                // Dealer must hit until their hand value is at least 17
+                blackjackGame.DealerHit();
+                PopulatePictureBoxes();
+            }
         }
     }
 }
