@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,6 +14,7 @@ namespace Blackjack
     public partial class Blackjack : Form
     {
         private BlackjackGame blackjackGame;
+        private static string cardBackUrl = Path.Combine(Application.StartupPath, "Resources", "cards", "BicycleBack.png");
         public Blackjack()
         {
             InitializeComponent();
@@ -28,11 +30,11 @@ namespace Blackjack
 
         private void populatePictureBoxes()
         {
-            LoadCardsIntoPictureBox(blackjackGame.dealerCards, dealerDeckPictureBox);
-            LoadCardsIntoPictureBox(blackjackGame.playerCards, userDeckPictureBoxSingle);
+            LoadCardsIntoPictureBox(blackjackGame.dealerCards, dealerDeckPictureBox, true);
+            LoadCardsIntoPictureBox(blackjackGame.playerCards, userDeckPictureBoxSingle, false);
         }
 
-        private void LoadCardsIntoPictureBox(CardGroup hand, PictureBox pictureBox)
+        private void LoadCardsIntoPictureBox(CardGroup hand, PictureBox pictureBox, bool isDealer)
         {
             // Clear the PictureBox control before loading new cards
             pictureBox.Image = null;
@@ -43,8 +45,16 @@ namespace Blackjack
             {
                 if (card != null)
                 {
-                    Bitmap cardImage = new Bitmap(card.FileName());
+                    Bitmap cardImage;
 
+                    if (isDealer && x == 0)
+                    {
+                        cardImage = new Bitmap(cardBackUrl);
+                    }
+                    else
+                    {
+                        cardImage = new Bitmap(card.FileName());
+                    }
                     // Scale down the card image to fit the PictureBox control
                     float scale = (float)pictureBox.Height / cardImage.Height;
                     int newWidth = (int)(cardImage.Width * scale);
@@ -86,6 +96,16 @@ namespace Blackjack
         }
 
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void hitButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void standButton_Click(object sender, EventArgs e)
         {
 
         }

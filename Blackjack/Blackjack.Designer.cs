@@ -33,6 +33,8 @@
             this.dealerDeckPictureBox = new System.Windows.Forms.PictureBox();
             this.DealerCardsLabel = new System.Windows.Forms.Label();
             this.PlayerCardsLabel = new System.Windows.Forms.Label();
+            this.hitButton = new System.Windows.Forms.Button();
+            this.standButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.userDeckPictureBoxSingle)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.deckPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dealerDeckPictureBox)).BeginInit();
@@ -83,11 +85,35 @@
             this.PlayerCardsLabel.Text = "Your Cards:";
             this.PlayerCardsLabel.Click += new System.EventHandler(this.label1_Click);
             // 
+            // hitButton
+            // 
+            this.hitButton.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.hitButton.Location = new System.Drawing.Point(939, 619);
+            this.hitButton.Name = "hitButton";
+            this.hitButton.Size = new System.Drawing.Size(100, 50);
+            this.hitButton.TabIndex = 5;
+            this.hitButton.Text = "Hit";
+            this.hitButton.UseVisualStyleBackColor = true;
+            this.hitButton.Click += new System.EventHandler(this.hitButton_Click);
+            // 
+            // standButton
+            // 
+            this.standButton.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.standButton.Location = new System.Drawing.Point(1066, 619);
+            this.standButton.Name = "standButton";
+            this.standButton.Size = new System.Drawing.Size(100, 50);
+            this.standButton.TabIndex = 6;
+            this.standButton.Text = "Stand";
+            this.standButton.UseVisualStyleBackColor = true;
+            this.standButton.Click += new System.EventHandler(this.standButton_Click);
+            // 
             // Blackjack
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.standButton);
+            this.Controls.Add(this.hitButton);
             this.Controls.Add(this.PlayerCardsLabel);
             this.Controls.Add(this.DealerCardsLabel);
             this.Controls.Add(this.dealerDeckPictureBox);
@@ -110,5 +136,7 @@
         private PictureBox dealerDeckPictureBox;
         private Label DealerCardsLabel;
         private Label PlayerCardsLabel;
+        private Button hitButton;
+        private Button standButton;
     }
 }
