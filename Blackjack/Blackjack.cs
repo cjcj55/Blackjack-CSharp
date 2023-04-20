@@ -27,7 +27,7 @@ namespace Blackjack
 
             deckPictureBox.Image = Image.FromFile(Path.Combine(Application.StartupPath, "Resources", "cards", "BicycleBackStack.png"));
             deckPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-            PopulatePictureBoxes();
+            PopulateInitialPictureBoxes();
 
             CheckForBlackjack();
         }
@@ -41,18 +41,21 @@ namespace Blackjack
         {
             if (blackjackGame.CheckPlayerCardsForBlackjack() && !blackjackGame.CheckDealerCardsForBlackjack())
             {
+                System.Diagnostics.Debug.WriteLine("Player wins!");
                 score.IncrementPlayerWins();
                 return true;
             }
 
             if (blackjackGame.CheckDealerCardsForBlackjack() && !blackjackGame.CheckPlayerCardsForBlackjack())
             {
+                System.Diagnostics.Debug.WriteLine("Player loses!");
                 score.IncrementDealerWins();
                 return true;
             }
 
-            if (blackjackGame.CheckDealerCardsForBlackjack() == blackjackGame.CheckPlayerCardsForBlackjack())
+            if (blackjackGame.CheckDealerCardsForBlackjack() && blackjackGame.CheckPlayerCardsForBlackjack())
             {
+                System.Diagnostics.Debug.WriteLine("Tie!");
                 return true;
             }
 
@@ -69,11 +72,20 @@ namespace Blackjack
         }
 
         /// <summary>
+        ///     At beginning of a round, populates the PictureBoxes for the player's hand and dealer's hand.
+        /// </summary>
+        private void PopulateInitialPictureBoxes()
+        {
+            LoadCardsIntoPictureBox(blackjackGame.dealerCards, dealerDeckPictureBox, true);
+            LoadCardsIntoPictureBox(blackjackGame.playerCards, userDeckPictureBoxSingle, false);
+        }
+
+        /// <summary>
         ///     Populates the PictureBoxes for the player's hand and dealer's hand.
         /// </summary>
         private void PopulatePictureBoxes()
         {
-            LoadCardsIntoPictureBox(blackjackGame.dealerCards, dealerDeckPictureBox, true);
+            LoadCardsIntoPictureBox(blackjackGame.dealerCards, dealerDeckPictureBox, false);
             LoadCardsIntoPictureBox(blackjackGame.playerCards, userDeckPictureBoxSingle, false);
         }
 
@@ -159,25 +171,50 @@ namespace Blackjack
         private void hitButton_Click(object sender, EventArgs e)
         {
             blackjackGame.PlayerHit();
-            PopulatePictureBoxes();
+            PopulateInitialPictureBoxes();
             CheckForBlackjack();
+            if (blackjackGame.PlayerBust())
+            {
+                System.Diagnostics.Debug.WriteLine("Player loses!  Player has: " + blackjackGame.playerCards.GetHandValue() + ", Dealer has: " + blackjackGame.dealerCards.GetHandValue());
+            }
         }
 
         private void standButton_Click(object sender, EventArgs e)
         {
             //blackjackGame.PlayerChoosesToStand();
 
-            System.Diagnostics.Debug.WriteLine(blackjackGame.dealerCards.GetHandValue());
-
-
             while (blackjackGame.dealerCards.GetHandValue() < 17)
             {
-                System.Diagnostics.Debug.WriteLine(blackjackGame.dealerCards.GetHandValue());
 
                 // Dealer must hit until their hand value is at least 17
                 blackjackGame.DealerHit();
-                PopulatePictureBoxes();
             }
+
+            CheckForBlackjack();
+            if (blackjackGame.DealerBust())
+            {
+                System.Diagnostics.Debug.WriteLine("Dealer busted!  Player wins!  Player has: " + blackjackGame.playerCards.GetHandValue() + ", Dealer has: " + blackjackGame.dealerCards.GetHandValue());
+            }
+
+            int winner = blackjackGame.CalculateWinner();
+
+            if (winner == 1)
+            {
+                // Player wins
+                score.IncrementPlayerWins();
+                System.Diagnostics.Debug.WriteLine("Player wins!  Player has: " + blackjackGame.playerCards.GetHandValue() + ", Dealer has: " + blackjackGame.dealerCards.GetHandValue());
+            } else if (winner == -1)
+            {
+                // Dealer wins
+                score.IncrementDealerWins();
+                System.Diagnostics.Debug.WriteLine("Player loses!  Player has: " + blackjackGame.playerCards.GetHandValue() + ", Dealer has: " + blackjackGame.dealerCards.GetHandValue());
+            } else
+            {
+                // Tie
+                System.Diagnostics.Debug.WriteLine("Tie!  Player has: " + blackjackGame.playerCards.GetHandValue() + ", Dealer has: " + blackjackGame.dealerCards.GetHandValue());
+            }
+
+            PopulatePictureBoxes();
         }
     }
 }

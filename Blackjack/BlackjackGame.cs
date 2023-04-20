@@ -126,6 +126,19 @@ namespace Blackjack
             return false;
         }
 
+        /// <summary>
+        ///     Check if the dealer busted or not.
+        /// </summary>
+        /// <returns></returns>
+        public bool DealerBust()
+        {
+            if (dealerCards.GetHandValue() > 21)
+            {
+                return true;
+            }
+            return false;
+        }
+
 
         /// <summary>
         ///     Ends player's turn when they choose to stand.
@@ -162,7 +175,7 @@ namespace Blackjack
             }
 
             // Check for a tie
-            if (playerHandValue == dealerHandValue)
+            if (playerHandValue == dealerHandValue && playerHandValue < 21 && dealerHandValue < 21)
             {
                 return 0;
             }

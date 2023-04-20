@@ -32,6 +32,25 @@ namespace Blackjack
             {
                 handValue += cards[i].GetValue();
             }
+
+            int aceCount = 0;
+            for (int i = 0; i < NumCards; i++)
+            {
+                if (cards[i].Face == 'A')
+                {
+                    aceCount++;
+                }
+            }
+
+            if (handValue > 21 && aceCount > 0)
+            {
+                while (handValue > 21 && aceCount > 0)
+                {
+                    handValue -= 10;
+                    aceCount--;
+                }
+            }
+
             return handValue;
         }
 
