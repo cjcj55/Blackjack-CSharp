@@ -28,6 +28,7 @@ namespace Blackjack
             deckPictureBox.Image = Image.FromFile(Path.Combine(Application.StartupPath, "Resources", "cards", "BicycleBackStack.png"));
             deckPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             PopulateInitialPictureBoxes();
+            UpdateScore();
 
             CheckForBlackjack();
         }
@@ -42,20 +43,36 @@ namespace Blackjack
             if (blackjackGame.CheckPlayerCardsForBlackjack() && !blackjackGame.CheckDealerCardsForBlackjack())
             {
                 System.Diagnostics.Debug.WriteLine("Player wins!");
+                PopulatePictureBoxes();
                 score.IncrementPlayerWins();
+                UpdateScore();
+                hitButton.Enabled = false;
+                playAgainButton.Visible = true;
+                standButton.Enabled = false;
                 return true;
             }
 
             if (blackjackGame.CheckDealerCardsForBlackjack() && !blackjackGame.CheckPlayerCardsForBlackjack())
             {
                 System.Diagnostics.Debug.WriteLine("Player loses!");
+                PopulatePictureBoxes();
                 score.IncrementDealerWins();
+                UpdateScore();
+                hitButton.Enabled = false;
+                playAgainButton.Visible = true;
+                standButton.Enabled = false;
                 return true;
             }
 
             if (blackjackGame.CheckDealerCardsForBlackjack() && blackjackGame.CheckPlayerCardsForBlackjack())
             {
                 System.Diagnostics.Debug.WriteLine("Tie!");
+                PopulatePictureBoxes();
+                score.IncrementTies();
+                UpdateScore();
+                hitButton.Enabled = false;
+                playAgainButton.Visible = true;
+                standButton.Enabled = false;
                 return true;
             }
 
@@ -175,12 +192,21 @@ namespace Blackjack
             CheckForBlackjack();
             if (blackjackGame.PlayerBust())
             {
+                PopulatePictureBoxes();
+                score.IncrementDealerWins();
+                UpdateScore();
+                hitButton.Enabled = false;
+                standButton.Enabled = false;
+                playAgainButton.Visible = true;
                 System.Diagnostics.Debug.WriteLine("Player loses!  Player has: " + blackjackGame.playerCards.GetHandValue() + ", Dealer has: " + blackjackGame.dealerCards.GetHandValue());
             }
         }
 
         private void standButton_Click(object sender, EventArgs e)
         {
+            hitButton.Enabled = false;
+            standButton.Enabled = false;
+
             //blackjackGame.PlayerChoosesToStand();
 
             while (blackjackGame.dealerCards.GetHandValue() < 17)
@@ -211,10 +237,55 @@ namespace Blackjack
             } else
             {
                 // Tie
+                score.IncrementTies();
                 System.Diagnostics.Debug.WriteLine("Tie!  Player has: " + blackjackGame.playerCards.GetHandValue() + ", Dealer has: " + blackjackGame.dealerCards.GetHandValue());
             }
 
+            // System.Diagnostics.Debug.WriteLine("Player's Score: " + score.ToString());
+
             PopulatePictureBoxes();
+            UpdateScore();
+            playAgainButton.Visible = true;
+        }
+
+        private void UpdateScore()
+        {
+            playerScore.Text = score.GetPlayerWins().ToString();
+            dealerScore.Text = score.GetDealerWins().ToString();
+            tieScore.Text = score.GetTies().ToString();
+        }
+
+        private void playAgainButton_Click(object sender, EventArgs e)
+        {
+            playAgainButton.Visible = false;
+            hitButton.Enabled = true;
+            standButton.Enabled = true;
+
+            PlayBlackjackRound();
+
+            blackjackGame = new BlackjackGame();
+            blackjackGame.DealCards();
+
+            // deckPictureBox.Image = Image.FromFile(Path.Combine(Application.StartupPath, "Resources", "cards", "BicycleBackStack.png"));
+            // deckPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            PopulateInitialPictureBoxes();
+
+            CheckForBlackjack();
+        }
+
+        private void quitBtn_Click(object sender, EventArgs e)
+        {
+            // Create a copy of the collection
+            List<Form> openForms = Application.OpenForms.Cast<Form>().ToList();
+
+            // Iterate over the copy and close each form
+            foreach (Form form in openForms)
+            {
+                form.Close();
+            }
+
+            // Exit the application
+            Application.Exit();
         }
     }
 }

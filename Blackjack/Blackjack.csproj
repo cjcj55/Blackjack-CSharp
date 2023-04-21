@@ -9,9 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="Resources\cards\Back.gif">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Resources\cards\BicycleBack.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
